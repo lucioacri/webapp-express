@@ -24,3 +24,5 @@ const show = (req, res) => {
     });
   });
 };
+
+module.exports = { index, show };
