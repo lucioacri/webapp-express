@@ -11,7 +11,7 @@ const port = 3000;
 // MIDDLEWARES
 
 app.use(express.json());
-
+app.use(express.static("public"));
 // ROUTES
 
 app.use("/movies", movieRouter);

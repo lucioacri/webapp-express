@@ -5,8 +5,14 @@ const index = (req, res) => {
 
   connection.query(movieSql, (err, results) => {
     if (err) return res.status(500).json({ message: "Internal error" });
+
+    const movies = results.map((movie) => {
+      movie.image = "http://localhost:3000/movies_cover/" + movie.image;
+      return movie;
+    });
+
     res.json({
-      movies: results,
+      movies,
     });
   });
 };
@@ -20,6 +26,8 @@ const show = (req, res) => {
     if (results.length === 0)
       return res.status(404).json({ message: "Movie not found" });
     const movie = results[0];
+
+    movie.image = "http://localhost:3000/movies_cover/" + movie.image;
 
     const reviewSql = "SELECT reviews.* FROM reviews WHERE movie_id = ?";
 
