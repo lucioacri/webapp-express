@@ -42,4 +42,23 @@ const show = (req, res) => {
   });
 };
 
-module.exports = { index, show };
+const postReview = (req, res) => {
+  const { id } = req.params;
+  const { name, vote, text } = req.body;
+
+  const newReviewSql = `INSERT INTO movies.reviews
+  (movie_id, name, vote, text) VALUES (?, ?, ?, ?);
+  `;
+
+  const saveReviewValues = [id, name, vote, text];
+
+  connection.query(newReviewSql, saveReviewValues, (err, results) => {
+    if (err) return res.status(500).json({ message: "Internal error" });
+    return res.json({
+      message: "Review added!",
+      reviewId: results.insertId,
+    });
+  });
+};
+
+module.exports = { index, show, postReview };
