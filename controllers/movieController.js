@@ -61,4 +61,30 @@ const postReview = (req, res) => {
   });
 };
 
-module.exports = { index, show, postReview };
+const createMovie = (req, res) => {
+  const { title, abstract, image, genre, director, release_year } = req.body;
+
+  const newMovieSql = `
+    INSERT INTO movies.movies (title, abstract, image, genre, director, release_year)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
+
+  const newMovieValues = [
+    title,
+    abstract,
+    image,
+    genre,
+    director,
+    release_year,
+  ];
+
+  connection.query(newMovieSql, newMovieValues, (err, results) => {
+    if (err) return res.status(500).json({ message: "Internal error" });
+    return res.json({
+      message: "New film added!",
+      newFilmId: results.insertId,
+    });
+  });
+};
+
+module.exports = { index, show, postReview, createMovie };
